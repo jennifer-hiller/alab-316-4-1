@@ -18,44 +18,47 @@ registrationForm.addEventListener("submit", (event) => {
   event.preventDefault();
   let errorMessage = "";
   const formData = new FormData(registrationForm);
-  if (formData.get("username") === "") {
+  const username = formData.get("username");
+  if (username === "") {
     errorMessage += "Username cannot be empty. ";
-  } else if (formData.get("username").length < 4) {
+  } else if (username.length < 4) {
     errorMessage += "Username must be at least 4 characters long. ";
     // value cannot contain spaces or whitespace
-  } else if (formData.get("username").match(/\s/g)) {
+  } else if (username.match(/\s/g)) {
     errorMessage += "Username cannot contain whitespace. ";
     // value needs at least 2 unique characters
-  } else if (new Set(formData.get("username")).size < 2) {
+  } else if (new Set(username).size < 2) {
     errorMessage += "Username needs at least 2 unique characters. ";
   } else if (
     localStorage.getItem("username") &&
-    formData.get("username").toLowerCase() === localStorage.getItem("username")
+    username.toLowerCase() === localStorage.getItem("username")
   ) {
     errorMessage += "Username already exists. ";
   }
-  if (formData.get("email") === "") {
+  const email = formData.get("email");
+  if (email === "") {
     errorMessage += "Email cannot be empty. ";
-  } else if (!formData.get("email").match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+  } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
     errorMessage += "Invalid email format. ";
-  } else if (formData.get("email").match(/example\.com$/i)) {
+  } else if (email.match(/example\.com$/i)) {
     errorMessage += "Email cannot be from example.com. ";
   }
-  if (formData.get("password") === "") {
+  const password = formData.get("password");
+  if (password === "") {
     errorMessage += "Password cannot be empty. ";
-  } else if (formData.get("password").length < 12) {
+  } else if (password.length < 12) {
     errorMessage += "Password must be at least 12 characters long. ";
-  } else if (!formData.get("password").match(/[a-z]/)) {
+  } else if (!password.match(/[a-z]/)) {
     errorMessage += "Password must contain at least one lowercase letter. ";
-  } else if (!formData.get("password").match(/[A-Z]/)) {
+  } else if (!password.match(/[A-Z]/)) {
     errorMessage += "Password must contain at least one uppercase letter. ";
-  } else if (!formData.get("password").match(/\d/)) {
+  } else if (!password.match(/\d/)) {
     errorMessage += "Password must contain at least one number. ";
-  } else if (!formData.get("password").match(/[^a-zA-Z\d]/)) {
+  } else if (!password.match(/[^a-zA-Z\d]/)) {
     errorMessage += "Password must contain at least one special character. ";
-  } else if (formData.get("password").match(/password/gi)) {
+  } else if (password.match(/password/gi)) {
     errorMessage += "Password cannot contain the word 'password'. ";
-  } else if (formData.get("password") !== formData.get("passwordCheck")) {
+  } else if (password !== formData.get("passwordCheck")) {
     errorMessage += "Passwords do not match. ";
   }
   if (!formData.get("terms")) {
@@ -65,9 +68,9 @@ registrationForm.addEventListener("submit", (event) => {
     displayError(errorMessage);
   } else {
     hideError();
-    localStorage.setItem("username", formData.get("username").toLowerCase());
-    localStorage.setItem("password", formData.get("password"));
-    localStorage.setItem("email", formData.get("email").toLowerCase());
+    localStorage.setItem("username", username.toLowerCase());
+    localStorage.setItem("password", password);
+    localStorage.setItem("email", email.toLowerCase());
     displaySuccess("Registration successful!");
   }
 });
@@ -77,14 +80,16 @@ loginForm.addEventListener("submit", (event) => {
   const formData = new FormData(loginForm);
   const localUsername = localStorage.getItem("username");
   const localPassword = localStorage.getItem("password");
-  if (formData.get("username") === "") {
+  const username = formData.get("username");
+  if (username === "") {
     errorMessage += "Username cannot be empty. ";
-  } else if (formData.get("username").toLowerCase() !== localUsername) {
+  } else if (username.toLowerCase() !== localUsername) {
     errorMessage += "Username does not exist. ";
   }
-  if (formData.get("password") === "") {
+  const password = formData.get("password");
+  if (password === "") {
     errorMessage += "Password cannot be empty. ";
-  } else if (formData.get("password") !== localPassword) {
+  } else if (password !== localPassword) {
     errorMessage += "Incorrect password. ";
   }
   if (errorMessage) {
