@@ -104,11 +104,11 @@ a {
 a:hover {
   color: #ffab40;
 }
-#errorDisplay {
+#errorDisplay,
+#successDisplay {
   position: absolute;
   background: #fcc;
   color: red;
-  display: flex;
   width: 500px;
   left: 50%;
   top: calc(50% + 180px);
@@ -117,4 +117,8 @@ a:hover {
   user-select: none;
   padding: 20px;
   display: none;
+}
+#successDisplay {
+  background: rgb(222, 247, 222);
+  color: green;
 }

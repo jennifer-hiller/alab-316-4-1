@@ -1,9 +1,14 @@
 const errorDisplay = document.getElementById("errorDisplay");
+const successDisplay = document.getElementById("successDisplay");
 const registrationForm = document.getElementById("registration");
 const loginForm = document.getElementById("login");
 function displayError(message) {
   errorDisplay.textContent = message;
   errorDisplay.style.display = "flex";
+}
+function displaySuccess(message) {
+  successDisplay.textContent = message;
+  successDisplay.style.display = "flex";
 }
 function hideError() {
   errorDisplay.textContent = "";
@@ -24,8 +29,8 @@ registrationForm.addEventListener("submit", (event) => {
   } else if (new Set(formData.get("username")).size < 2) {
     errorMessage += "Username needs at least 2 unique characters. ";
   } else if (
-    localStorage.get("username") &&
-    formData.get("username").toLowerCase() === localStorage.get("username")
+    localStorage.getItem("username") &&
+    formData.get("username").toLowerCase() === localStorage.getItem("username")
   ) {
     errorMessage += "Username already exists. ";
   }
@@ -63,7 +68,7 @@ registrationForm.addEventListener("submit", (event) => {
     localStorage.setItem("username", formData.get("username").toLowerCase());
     localStorage.setItem("password", formData.get("password"));
     localStorage.setItem("email", formData.get("email").toLowerCase());
-    event.target.submit();
+    displaySuccess("Registration successful!");
   }
 });
 loginForm.addEventListener("submit", (event) => {
@@ -86,6 +91,9 @@ loginForm.addEventListener("submit", (event) => {
     displayError(errorMessage);
   } else {
     hideError();
-    event.target.submit();
+    let persist = formData.get("persist")
+      ? " And you will stay logged in."
+      : "";
+    displaySuccess("Login successful!" + persist);
   }
 });
